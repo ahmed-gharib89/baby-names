@@ -34,7 +34,7 @@ public class Main {
 
     public int getRank(int year, String name, String gender) {
         int count = 0;
-        String frName = "src/main/resources/us_babynames/us_babynames_test/yob" + year + "short.csv";
+        String frName = "src/main/resources/us_babynames/us_babynames_by_year/yob" + year + ".csv";
         FileResource fr = new FileResource(frName);
         for (CSVRecord rec : fr.getCSVParser(false)) {
             if (rec.get(1).equals(gender)) {
@@ -50,7 +50,7 @@ public class Main {
     public String getName(int year, int rank, String gender) {
         int count = 0;
         String name = "NO NAME";
-        String frName = "src/main/resources/us_babynames/us_babynames_test/yob" + year + "short.csv";
+        String frName = "src/main/resources/us_babynames/us_babynames_by_year/yob" + year + ".csv";
         FileResource fr = new FileResource(frName);
         for (CSVRecord rec : fr.getCSVParser(false)) {
             if (rec.get(1).equals(gender)) {
@@ -103,21 +103,38 @@ public class Main {
         return totalRank / count;
     }
 
+    public int getTotalBirthsRankedHigher (int year, String name, String gender) {
+        int totalBirths = 0;
+        String frName = "src/main/resources/us_babynames/us_babynames_by_year/yob" + year + ".csv";
+        FileResource fr = new FileResource(frName);
+        for (CSVRecord rec : fr.getCSVParser(false)) {
+            if (rec.get(1).equals(gender)) {
+                if (rec.get(0).equals(name)) {
+                    break;
+                }
+                totalBirths += Integer.parseInt(rec.get(2));
+            }
+        }
+        return totalBirths;
+    }
+
     public static void main(String[] args) {
         System.out.println("Starting the application..");
-        FileResource fr = new FileResource("src/main/resources/us_babynames/us_babynames_test/example-small.csv");
+        FileResource fr = new FileResource("src/main/resources/us_babynames/us_babynames_by_year/yob1905.csv");
         Main m = new Main();
 //        m.totalBirths(fr);
-//        System.out.println("Rank of Mason and Gender M in year 2012 = " + m.getRank(2012, "Mason", "M"));
-//        System.out.println("Rank of Mason and Gender F in year 2012 = " + m.getRank(2012, "Mason", "F"));
-//        System.out.println("The name of ranked 2 male in 2012 = " + m.getName(2012, 2, "M"));
-//        System.out.println("The name of ranked 2 female in 2013 = " + m.getName(2013, 2, "F"));
+//        System.out.println("Rank of Frank and Gender M in year 1971 = " + m.getRank(1971, "Frank", "M"));
+//        System.out.println("Rank of Emily and Gender F in year 1960 = " + m.getRank(1960, "Emily", "F"));
+//        System.out.println("The name of ranked 450 male in 1982 = " + m.getName(1982, 450, "M"));
+//        System.out.println("The name of ranked 350 female in 1980 = " + m.getName(1980, 350, "F"));
 //        System.out.println("The name of ranked 100 male in 2012 = " + m.getName(2012, 100, "M"));
-//        m.whatIsNameInYear("Isabella", 2012, 2014, "F");
+//        m.whatIsNameInYear("Owen", 1974, 2014, "M");
 //        m.whatIsNameInYear("Mason", 2012, 2014, "F");
-//        System.out.println(m.yearOfHighestRank("Mason", "M"));
-        System.out.println(m.getAverageRank("Mason", "M"));
-        System.out.println(m.getAverageRank("Jacob", "M"));
+//        System.out.println(m.yearOfHighestRank("Mich", "M"));
+//        System.out.println(m.getAverageRank("Susan", "F"));
+//        System.out.println(m.getAverageRank("Robert", "M"));
+        System.out.println(m.getTotalBirthsRankedHigher(1990, "Emily", "F"));
+        System.out.println(m.getTotalBirthsRankedHigher(1990, "Drew", "M"));
 
     }
 }
