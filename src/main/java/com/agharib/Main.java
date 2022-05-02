@@ -86,10 +86,21 @@ public class Main {
                 rank = currRank;
                 year = currYear;
             }
-
         }
-
         return year;
+    }
+
+    public double getAverageRank(String name, String gender) {
+        double totalRank = 0;
+        double count = 0;
+        DirectoryResource dr = new DirectoryResource();
+        for (File f: dr.selectedFiles()) {
+            int currYear = Integer.parseInt(f.getName().substring(3, 7));
+            int currRank = getRank(currYear, name, gender);
+            count ++;
+            totalRank += currRank;
+        }
+        return totalRank / count;
     }
 
     public static void main(String[] args) {
@@ -104,7 +115,9 @@ public class Main {
 //        System.out.println("The name of ranked 100 male in 2012 = " + m.getName(2012, 100, "M"));
 //        m.whatIsNameInYear("Isabella", 2012, 2014, "F");
 //        m.whatIsNameInYear("Mason", 2012, 2014, "F");
-        System.out.println(m.yearOfHighestRank("Mason", "M"));
+//        System.out.println(m.yearOfHighestRank("Mason", "M"));
+        System.out.println(m.getAverageRank("Mason", "M"));
+        System.out.println(m.getAverageRank("Jacob", "M"));
 
     }
 }
