@@ -1,9 +1,10 @@
 package com.agharib;
 
+import edu.duke.DirectoryResource;
 import edu.duke.FileResource;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 public class Main {
     public void totalBirths(FileResource fr) {
@@ -74,6 +75,23 @@ public class Main {
         System.out.println(name + " born in "+ year + " would be " + newName + " if " + sheOrHe +" was born in " + newYear + ".");
     }
 
+    public int yearOfHighestRank(String name, String gender) {
+        int year = -1;
+        int rank = Integer.MAX_VALUE;
+        DirectoryResource dr = new DirectoryResource();
+        for (File f: dr.selectedFiles()) {
+            int currYear = Integer.parseInt(f.getName().substring(3, 7));
+            int currRank = getRank(currYear, name, gender);
+            if (currRank != -1 && currRank < rank) {
+                rank = currRank;
+                year = currYear;
+            }
+
+        }
+
+        return year;
+    }
+
     public static void main(String[] args) {
         System.out.println("Starting the application..");
         FileResource fr = new FileResource("src/main/resources/us_babynames/us_babynames_test/example-small.csv");
@@ -84,8 +102,9 @@ public class Main {
 //        System.out.println("The name of ranked 2 male in 2012 = " + m.getName(2012, 2, "M"));
 //        System.out.println("The name of ranked 2 female in 2013 = " + m.getName(2013, 2, "F"));
 //        System.out.println("The name of ranked 100 male in 2012 = " + m.getName(2012, 100, "M"));
-        m.whatIsNameInYear("Isabella", 2012, 2014, "F");
-        m.whatIsNameInYear("Mason", 2012, 2014, "F");
+//        m.whatIsNameInYear("Isabella", 2012, 2014, "F");
+//        m.whatIsNameInYear("Mason", 2012, 2014, "F");
+        System.out.println(m.yearOfHighestRank("Mason", "M"));
 
     }
 }
